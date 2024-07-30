@@ -1,8 +1,12 @@
-import Vue from 'vue'
-import App from './App.vue'
+// src/main.js
 
-Vue.config.productionTip = false
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+
+Vue.config.productionTip = false;
 
 new Vue({
   render: h => h(App),
-}).$mount('#app')
+  router // 将 router 实例注入到 Vue 实例
+}).$mount('#app');
