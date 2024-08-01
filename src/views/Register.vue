@@ -20,16 +20,17 @@
       </div>
       <button type="submit">Register</button>
     </form>
-    <!-- Button to navigate to the login page -->
+    <div v-if="message" class="error-message">
+      {{ message }}
+    </div>
     <button @click="goToLogin">Already have an account? Login</button>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import router from '../router'; // Assuming you have a router setup
+import router from '../router';
 
-//默认注册传回的参数
 export default {
   name: 'UserRegister',
   data() {
@@ -37,14 +38,14 @@ export default {
       username: '',
       password: '',
       passwordRepeat: '',
-      email: ''
+      email: '',
+      message: '' // 用于显示错误信息
     };
   },
   methods: {
-    //验证两次密码是否相同
     async register() {
       if (this.password !== this.passwordRepeat) {
-        alert("两次密码不相同!");
+        this.message = "两次密码不相同!";
         return;
       }
 
@@ -54,9 +55,14 @@ export default {
           password: this.password,
           email: this.email
         });
-        console.log('Register successful', response);
-
-
+        if (response.data.code === 1) { // Assuming 1 means success
+          console.log('Register successful', response);
+          this.message = '注册成功！';
+          // 注册成功后，可以重定向到登录页面
+          router.push('/login');
+        } else {
+          this.message = response.data.message; // Show error message from backend
+        }
       } catch (error) {
         console.error('Register error', error);
         if (error.response && error.response.data) {
@@ -66,10 +72,16 @@ export default {
         }
       }
     },
-    // Method to navigate to the login page
     goToLogin() {
       router.push('/login');
     }
   }
 };
 </script>
+
+<style scoped>
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+</style>
