@@ -1,21 +1,31 @@
-// src/router/index.js
-
 import Vue from 'vue';
 import Router from 'vue-router';
-import Login from '../views/Login.vue';
-import Register from '../views/Register.vue';
+import UserLogin from '@/components/UserLogin';
+import UserRegister from '@/components/UserRegister';
+import ForumHome from '@/components/ForumHome';
 
 Vue.use(Router);
 
-const routes = [
-  { path: '/login', component: Login },
-  { path: '/register', component: Register },
-  { path: '/', redirect: '/login' } // 默认重定向到登录页
-];
-
-const router = new Router({
-  mode: 'history',
-  routes
+export default new Router({
+  routes: [
+    {
+      path: '/login',
+      name: 'UserLogin',
+      component: UserLogin
+    },
+    {
+      path: '/register',
+      name: 'UserRegister',
+      component: UserRegister
+    },
+    {
+      path: '/home',
+      name: 'ForumHome',
+      component: ForumHome
+    },
+    {
+      path: '*',
+      redirect: '/login'
+    }
+  ]
 });
-
-export default router;

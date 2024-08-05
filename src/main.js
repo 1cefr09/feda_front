@@ -1,12 +1,22 @@
-// src/main.js
-
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
+import axios from 'axios';
 
 Vue.config.productionTip = false;
 
+// Axios global configuration
+axios.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    axios.defaults.headers.common['token'] = token;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
 new Vue({
-  render: h => h(App),
-  router // 将 router 实例注入到 Vue 实例
+  router,
+  render: h => h(App)
 }).$mount('#app');

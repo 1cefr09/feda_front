@@ -12,9 +12,7 @@
       </div>
       <button type="submit">Login</button>
     </form>
-    <!-- Button to navigate to the registration page -->
     <button @click="goToRegister">Don't have an account? Register</button>
-    <!-- Display message if any -->
     <div v-if="message" class="error-message">{{ message }}</div>
   </div>
 </template>
@@ -39,20 +37,16 @@ export default {
           username: this.username,
           password: this.password
         });
-        if (response.data.code === 1) { // Assuming 1 means success
-          // Handle successful login, maybe redirect to another page
-          console.log('Login successful', response.data.result);
-          router.push('/some-success-page'); // Redirect to a success page
+        if (response.data.code === 1) {
+          const { token } = response.data.data; // 解构 data 内的 token
+          localStorage.setItem('token', token); // 保存 JWT 到本地存储
+          router.push('/home'); // 跳转到主页
         } else {
-          this.message = response.data.message; // Show error message from backend
+          this.message = response.data.message || 'Login failed. Please try again.'; // 显示错误信息
         }
       } catch (error) {
         console.error('Error during login', error);
-        if (error.response && error.response.data) {
-          this.message = error.response.data.message || 'An error occurred during login. Please try again.';
-        } else {
-          this.message = 'An error occurred during login. Please try again.';
-        }
+        this.message = error.response?.data?.message || 'An error occurred during login. Please try again.';
       }
     },
     goToRegister() {

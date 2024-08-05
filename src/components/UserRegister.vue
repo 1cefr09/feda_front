@@ -20,9 +20,7 @@
       </div>
       <button type="submit">Register</button>
     </form>
-    <div v-if="message" class="error-message">
-      {{ message }}
-    </div>
+    <div v-if="message" class="error-message">{{ message }}</div>
     <button @click="goToLogin">Already have an account? Login</button>
   </div>
 </template>
@@ -39,7 +37,7 @@ export default {
       password: '',
       passwordRepeat: '',
       email: '',
-      message: '' // 用于显示错误信息
+      message: ''
     };
   },
   methods: {
@@ -51,25 +49,19 @@ export default {
 
       try {
         const response = await axios.post('http://localhost:8080/api/user/register', {
-          username: this.username,
+          id: this.username,
           password: this.password,
           email: this.email
         });
-        if (response.data.code === 1) { // Assuming 1 means success
-          console.log('Register successful', response);
+        if (response.data.code === 1) {
           this.message = '注册成功！';
-          // 注册成功后，可以重定向到登录页面
           router.push('/login');
         } else {
-          this.message = response.data.message; // Show error message from backend
+          this.message = response.data.message;
         }
       } catch (error) {
         console.error('Register error', error);
-        if (error.response && error.response.data) {
-          this.message = error.response.data.message || 'An error occurred during registration. Please try again.';
-        } else {
-          this.message = 'An error occurred during registration. Please try again.';
-        }
+        this.message = error.response?.data.message || 'An error occurred during registration. Please try again.';
       }
     },
     goToLogin() {
