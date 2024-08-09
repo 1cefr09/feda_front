@@ -43,7 +43,28 @@ export default {
           console.error('Error fetching posts', error);
         }
       }
+    },
+    async submitPost() {
+      try {
+        const response = await axios.post('http://localhost:8080/api/post/userPost', {
+          title: this.newPost.title,
+          content: this.newPost.content,
+          categoryId: this.categoryId
+        });
+        if (response.data.code === 200) {
+          this.newPost.title = '';
+          this.newPost.content = '';
+          this.fetchPosts(); // 发帖成功后重新加载帖子列表
+        } else {
+          console.error('Failed to create post:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error creating post', error);
+      }
     }
+  },
+  mounted() {
+    this.fetchPosts();
   }
 };
 </script>
