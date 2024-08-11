@@ -29,10 +29,10 @@ export default new Router({
       redirect: '/login'
     },
     {
-      path: '/post/:postId', // 添加帖子详情页面的路由
+      path: '/post/:postId/comments',
       name: 'CommentList',
       component: CommentList,
-      props: true
+      props: true  // 通过 props 传递路由参数
     },
   ]
 });

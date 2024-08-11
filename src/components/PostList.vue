@@ -85,7 +85,7 @@ export default {
             alert('发帖成功！');
             this.newPost.title = '';
             this.newPost.content = '';
-            this.fetchPosts(this.selectedCategory); // 发帖成功后刷新帖子列表
+            this.fetchPosts(); // 发帖成功后刷新帖子列表
           }
         } catch (error) {
           if (error.response && error.response.status === 403) {
@@ -97,6 +97,9 @@ export default {
           }
         }
       }
+    },
+    goToPost(postId) {
+      this.$router.push({ name: 'CommentList', params: { postId: postId } });
     },
     prevPage() {
       if (this.currentPage > 1) {
@@ -111,9 +114,6 @@ export default {
       }
     }
   },
-  goToPost(postId) {
-    this.$router.push({ name: 'CommentList', params: { postId: postId } });
-  },
   mounted() {
     this.fetchPosts();
   }
@@ -123,12 +123,13 @@ export default {
 <style scoped>
 .pagination {
   display: flex;
+  justify-content: center; /* 将分页按钮居中 */
   align-items: center;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .pagination-btn {
-  padding: 5px 10px;
+  padding: 8px 15px;
   margin-right: 10px;
   background-color: #007bff;
   color: white;
@@ -146,29 +147,47 @@ export default {
   font-size: 14px;
 }
 
+ul {
+  padding-left: 0; /* 移除默认的 padding */
+  list-style: none; /* 移除默认的列表样式 */
+}
+
+.post-item {
+  margin: 10px 0; /* 增加标题之间的间距 */
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.post-item:hover {
+  background-color: #f1f1f1;
+}
+
 .post-form {
-  margin-top: 25px;
-  padding: 15px;
+  margin-top: 30px;
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
 .form-title {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 15px;
 }
 
 .form-input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 12px;
+  margin-bottom: 15px;
   box-sizing: border-box;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
 .post-btn {
-  padding: 10px 20px;
+  padding: 12px 25px;
   background-color: #28a745;
   color: white;
   border: none;
@@ -180,5 +199,23 @@ export default {
 
 .post-btn:hover {
   background-color: #218838;
+}
+
+.post-content {
+  margin-bottom: 30px; /* 增加帖子内容与评论之间的间距 */
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.comment-item {
+  margin: 15px 0; /* 增加评论之间的间距 */
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.comment-item:hover {
+  background-color: #f1f1f1;
 }
 </style>
