@@ -142,25 +142,82 @@ export default {
 
 <style scoped>
 .user-info {
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  padding: 30px; /* 增加内边距 */
+  font-family: 'Roboto', sans-serif; /* 使用现代字体 */
+  background-color: #f8f9fa; /* 设置整体背景颜色 */
+  border-radius: 8px; /* 增加圆角 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 增加阴影效果 */
+  max-width: 600px; /* 设置最大宽度 */
+  margin: 0 auto; /* 居中对齐 */
 }
 
 label {
   display: block;
-  margin: 10px 0;
+  margin: 15px 0 5px; /* 调整标签的上下间距 */
+  font-size: 16px; /* 增加字体大小 */
+  color: #333; /* 设置字体颜色 */
+  font-weight: bold; /* 加粗字体 */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%; /* 设置输入框宽度为100% */
+  padding: 12px 15px; /* 增加输入框内边距 */
+  margin-bottom: 20px; /* 增加输入框与下方元素的间距 */
+  border: 1px solid #ccc; /* 设置边框颜色 */
+  border-radius: 5px; /* 增加圆角 */
+  box-sizing: border-box; /* 确保内边距和边框不会影响总宽度 */
+  font-size: 14px; /* 设置字体大小 */
+  transition: border-color 0.3s ease; /* 增加边框颜色渐变效果 */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #007bff; /* 聚焦时的边框颜色 */
+  outline: none; /* 移除默认的聚焦样式 */
 }
 
 button {
-  margin: 10px 0;
-  padding: 5px 10px;
-  background-color: #007bff;
+  display: inline-block;
+  width: 100%; /* 设置按钮宽度为100% */
+  padding: 12px 20px; /* 增加按钮内边距 */
+  margin: 15px 0; /* 调整按钮的上下间距 */
+  background-color: #28a745; /* 使用绿色按钮 */
   color: white;
   border: none;
+  border-radius: 5px; /* 增加圆角 */
+  font-size: 16px; /* 增加字体大小 */
+  font-weight: bold; /* 加粗字体 */
   cursor: pointer;
+  transition: background-color 0.3s ease; /* 增加背景颜色渐变效果 */
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #218838; /* 悬停时的按钮背景色 */
+}
+
+.button-secondary {
+  background-color: #007bff; /* 添加辅助按钮样式 */
+}
+
+.button-secondary:hover {
+  background-color: #0056b3; /* 悬停时的辅助按钮背景色 */
+}
+
+@media (max-width: 768px) {
+  .user-info {
+    padding: 20px; /* 移动设备上缩小内边距 */
+  }
+
+  label {
+    font-size: 14px; /* 移动设备上调整字体大小 */
+  }
+
+  button {
+    padding: 10px 15px; /* 移动设备上调整按钮内边距 */
+  }
 }
 </style>
+

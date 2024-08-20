@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="comment-section">
     <ul>
       <li v-for="comment in comments" :key="comment.id" class="comment-item">
         <!-- 评论头部，显示用户名和时间 -->
@@ -27,8 +27,15 @@
       <button @click="nextPage" :disabled="currentPage === totalPages" class="pagination-btn">Next</button>
     </div>
 
+    <!-- 回帖按钮 -->
+    <div class="comment-add-btn" @click="toggleCommentForm">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+      </svg>
+    </div>
+
     <!-- 发评论框 -->
-    <div v-if="postId" class="comment-form">
+    <div v-if="showCommentForm" class="comment-form">
       <h3 class="form-title">Add a Comment</h3>
       <textarea v-model="newComment.content" placeholder="Comment" class="form-input content-input"></textarea>
       <button @click="createComment" class="comment-btn">Comment</button>
@@ -55,7 +62,8 @@ export default {
       totalComments: 0,
       newComment: {
         content: ''
-      }
+      },
+      showCommentForm: false
     };
   },
   computed: {
@@ -145,6 +153,9 @@ export default {
       } catch (error) {
         console.error('Failed to fetch user info:', error);
       }
+    },
+    toggleCommentForm() {
+      this.showCommentForm = !this.showCommentForm;
     }
   },
   mounted() {
@@ -154,22 +165,53 @@ export default {
 </script>
 
 <style scoped>
-/* 保持原有样式不变 */
+.comment-section {
+  position: relative;
+  padding-bottom: 60px; /* 预留空间放置回帖按钮 */
+}
+
+.comment-add-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.comment-add-btn:hover {
+  background-color: #0056b3;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
 .pagination {
   display: flex;
-  justify-content: center; /* 将分页按钮居中 */
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
 }
 
 .pagination-btn {
-  padding: 8px 15px; /* 增加按钮的大小 */
+  padding: 10px 20px;
   margin-right: 10px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-btn:hover {
+  background-color: #0056b3;
 }
 
 .pagination-btn:disabled {
@@ -182,28 +224,31 @@ export default {
 }
 
 .comment-form {
-  margin-top: 30px; /* 增加评论框与上方内容的间距 */
-  padding: 20px; /* 增加评论框的内边距 */
+  margin-top: 30px;
+  padding: 25px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 6px;
+  background-color: #fdfdfd;
 }
 
 .form-title {
-  font-size: 20px; /* 增加标题的字体大小 */
-  margin-bottom: 15px; /* 增加标题与输入框的间距 */
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .form-input {
   width: 100%;
-  padding: 12px; /* 增加输入框的内边距 */
-  margin-bottom: 15px; /* 增加输入框之间的间距 */
+  padding: 15px;
+  margin-bottom: 20px;
   box-sizing: border-box;
   border: 1px solid #ddd;
   border-radius: 4px;
+  font-size: 16px;
 }
 
 .comment-btn {
-  padding: 12px 25px; /* 增加按钮的大小 */
+  padding: 15px 30px;
   background-color: #28a745;
   color: white;
   border: none;
@@ -211,6 +256,8 @@ export default {
   cursor: pointer;
   display: block;
   width: 100%;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 .comment-btn:hover {
@@ -218,41 +265,48 @@ export default {
 }
 
 .comment-item {
-  margin: 15px 0; /* 增加评论项之间的间距 */
-  padding: 15px; /* 增加评论项的内边距 */
+  margin: 20px 0;
+  padding: 20px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 5px;
   background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .comment-item:hover {
-  background-color: #f1f1f1; /* 评论项悬停时的背景色变化 */
+  background-color: #f1f1f1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .comment-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px; /* 使标题与内容间隔更大 */
+  margin-bottom: 12px;
 }
 
 .comment-author {
-  font-weight: bold; /* 用户名加粗 */
-  font-size: 14px;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .comment-time {
-  font-size: 12px;
-  color: #888; /* 时间字体颜色稍浅 */
+  font-size: 14px;
+  color: #777;
 }
 
 .comment-content {
   font-size: 16px;
+  margin-bottom: 20px;
   line-height: 1.5;
 }
 
 .comment-footer {
   text-align: right;
-  font-size: 12px;
-  color: #888;
+}
+
+.comment-floor {
+  font-size: 14px;
+  color: #555;
 }
 </style>
