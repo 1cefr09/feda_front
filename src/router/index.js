@@ -4,6 +4,7 @@ import UserLogin from '@/components/UserLogin';
 import UserRegister from '@/components/UserRegister';
 import ForumHome from '@/components/ForumHome';
 import CommentList from "@/components/CommentList.vue";
+import UserInfo from "@/components/UserInfo.vue";
 
 Vue.use(Router);
 
@@ -34,5 +35,11 @@ export default new Router({
       component: CommentList,
       props: true  // 通过 props 传递路由参数
     },
+    {
+      path: '/userInfo',
+      name:'UserInfo',
+      component:UserInfo
+    },
+
   ]
 });

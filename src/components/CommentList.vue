@@ -4,17 +4,21 @@
       <li v-for="comment in comments" :key="comment.id" class="comment-item">
         <!-- 评论头部，显示用户名和时间 -->
         <div class="comment-header">
-          <span class="comment-author">{{ comment.authorName }}</span>
-          <span class="comment-time">{{ formatTime(comment.createTime)}}</span>
+          <span class="comment-author" @click="goToUserInfo(comment.authorId, comment.authorName)" style="cursor: pointer; color: blue;">
+            {{ comment.authorName }}
+          </span>
+          <span class="comment-time">{{ formatTime(comment.createTime) }}</span>
         </div>
         <!-- 评论内容 -->
         <div class="comment-content">
           {{ comment.content }}
         </div>
-
+        <!-- 评论楼层 -->
+        <div class="comment-footer">
+          <span class="comment-floor">#{{ comment.floor }} 楼</span>
+        </div>
       </li>
     </ul>
-
 
     <!-- 分页按钮 -->
     <div v-if="totalPages > 1" class="pagination">
@@ -96,9 +100,9 @@ export default {
         } catch (error) {
           if (error.response && error.response.status === 403) {
             alert('Your account is banned. You cannot comment.');
-          } else if (error.response && error.response.status === 500){
+          } else if (error.response && error.response.status === 500) {
             alert('评论内容不可为空！');
-          }else {
+          } else {
             console.error('Failed to create comment:', error);
           }
         }
@@ -119,6 +123,28 @@ export default {
     formatTime(timestamp) {
       const date = new Date(timestamp);
       return date.toLocaleString(); // 将时间格式化为本地格式
+    },
+    async goToUserInfo(userId, username) {
+      try {
+        const response = await axios.get('http://localhost:8080/api/user/getUserInfo', {
+          params: {
+            userId: userId,
+            username: username
+          }
+        });
+
+        if (response.data.code === 1) {
+          const userInfo = response.data.data;
+          // 这里可以将获取到的用户信息展示在一个新的页面或弹窗中
+          console.log('User Info:', userInfo);
+          // 跳转到用户信息页面（假设你已经设置了相关路由）
+          this.$router.push({ name: 'UserInfo', params: { userId: userInfo.id } });
+        } else {
+          alert('无法获取用户信息');
+        }
+      } catch (error) {
+        console.error('Failed to fetch user info:', error);
+      }
     }
   },
   mounted() {
@@ -128,6 +154,7 @@ export default {
 </script>
 
 <style scoped>
+/* 保持原有样式不变 */
 .pagination {
   display: flex;
   justify-content: center; /* 将分页按钮居中 */
@@ -223,4 +250,9 @@ export default {
   line-height: 1.5;
 }
 
+.comment-footer {
+  text-align: right;
+  font-size: 12px;
+  color: #888;
+}
 </style>
