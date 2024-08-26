@@ -30,7 +30,7 @@ export default {
   methods: {
     async fetchCategories() {
       try {
-        const response = await axios.get('http://localhost:8080/api/category/categoryList');
+        const response = await axios.get('http://192.144.219.102:8080/api/category/categoryList');
         this.categories = response.data.data || [];
       } catch (error) {
         console.error('Error fetching categories', error);

@@ -78,7 +78,7 @@ export default {
     async fetchComments() {
       if (this.postId) {
         try {
-          const response = await axios.get('http://localhost:8080/api/comment/commentPage', {
+          const response = await axios.get('http://192.144.219.102:8080/api/comment/commentPage', {
             params: {
               page: this.currentPage,
               pageSize: this.pageSize,
@@ -95,7 +95,7 @@ export default {
     async createComment() {
       if (this.newComment.content) {
         try {
-          const response = await axios.post('http://localhost:8080/api/comment/userComment', {
+          const response = await axios.post('http://192.144.219.102:8080/api/comment/userComment', {
             content: this.newComment.content,
             postId: this.postId
           });
@@ -134,7 +134,7 @@ export default {
     },
     async goToUserInfo(userId, username) {
       try {
-        const response = await axios.get('http://localhost:8080/api/user/getUserInfo', {
+        const response = await axios.get('http://192.144.219.102:8080/api/user/getUserInfo', {
           params: {
             userId: userId,
             username: username

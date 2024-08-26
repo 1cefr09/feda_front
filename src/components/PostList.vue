@@ -65,7 +65,7 @@ export default {
     async fetchPosts() {
       if (this.categoryId) {
         try {
-          const response = await axios.get('http://localhost:8080/api/post/postPage', {
+          const response = await axios.get('http://192.144.219.102:8080/api/post/postPage', {
             params: {
               page: this.currentPage,
               pageSize: this.pageSize,
@@ -82,7 +82,7 @@ export default {
     async createPost() {
       if (this.newPost.title && this.newPost.content) {
         try {
-          const response = await axios.post('http://localhost:8080/api/post/userPost', {
+          const response = await axios.post('http://192.144.219.102:8080/api/post/userPost', {
             title: this.newPost.title,
             content: this.newPost.content,
             categoryId: this.categoryId
